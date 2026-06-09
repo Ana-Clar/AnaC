@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Plataforma de Tecnologia Acessível para redução das desigualdades digitais. Recursos, ferramentas, Wi-Fi gratuito em BH e assistente IA sobre inclusão digital.">
+    <title>Tecnologia Acessível - Redução de Desigualdades Digitais</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #0b5e7e;
+            --secondary-light: #2196f3;
+            --accent: #FF9800;
+            --accent-dark: #e65100;
+            --light: #F9FDFF;
+            --dark: #1A237E;
+            --text: #1e2a3e;
+            --text-light: #4a627a;
+            --gray-bg: #f4f8fc;
+            --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.08);
+            --radius: 1rem;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        /* ALTO CONTRASTE */
+        body.high-contrast {
+            --light: #000000;
+            --text: #ffffff;
+            --text-light: #ffff99;
+            --gray-bg: #111111;
+            --primary: #ffeb3b;
+            --primary-dark: #ffc107;
+            --secondary: #4fc3f7;
+            --secondary-light: #81d4fa;
+            --accent: #ffb74d;
+        }
+
+        body.high-contrast .card,
+        body.high-contrast .chat-container,
+        body.high-contrast .section,
+        body.high-contrast .resource-card,
+        body.high-contrast .info-cards .card,
+        body.high-contrast .comments-section {
+            background-color: #111 !important;
+            color: #fff !important;
+            border: 2px solid #ffff66 !important;
+        }
+
+        body.high-contrast .accessibility-toolbar {
+            background: #000 !important;
+            border-bottom: 2px solid #ffeb3b;
+        }
+
+        body.high-contrast .message.ai-message {
+            background: #222 !important;
+            color: #f0f0f0 !important;
+            border-left: 4px solid #ffeb3b;
+        }
+
+        body.large-text {
+            font-size: 1.2rem;
+        }
+
+        body.large-text h1 { font-size: 2.8rem !important; }
+        body.large-text h2 { font-size: 2.2rem !important; }
+        body.large-text h3 { font-size: 1.8rem !important; }
+        body.large-text p, body.large-text li, body.large-text .card, body.large-text .message {
+            font-size: 1.2rem !important;
+        }
+
+        .accessibility-toolbar {
+            background: var(--dark);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .accessibility-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accessibility-btn:hover {
+            background: var(--accent);
+            transform: scale(0.97);
+        }
+
+        header {
+            background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+        }
+
+        .tagline {
+            max-width: 800px;
+            margin: 1rem auto 0;
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        /* Contador de visualizações */
+        .view-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        nav {
+            background: var(--primary-dark);
+            position: sticky;
+            top: 52px;
+            z-index: 999;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 0.25rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.6rem;
+            display: inline-block;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--accent);
+            color: #000;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* CHAT MODERNO */
+        .chat-container {
+            flex: 1.4;
+            min-width: 280px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .chat-header {
+            background: linear-gradient(95deg, var(--secondary), var(--secondary-light));
+            color: white;
+            padding: 1.2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .chat-box {
+            height: 450px;
+            overflow-y: auto;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #fefefe;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 0.9rem 1.2rem;
+            border-radius: 1.5rem;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background: var(--secondary-light);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0.2rem;
+        }
+
+        .ai-message {
+            background: #eff6ff;
+            color: var(--text);
+            align-self: flex-start;
+            border-bottom-left-radius: 0.2rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        .message-header {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1rem 0.5rem 0.5rem;
+            justify-content: center;
+        }
+
+        .quick-chip {
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-chip:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .input-area {
+            display: flex;
+            gap: 0.6rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+        }
+
+        .input-area input:focus {
+            outline: 2px solid var(--accent);
+        }
+
+        .input-area button {
+            background: var(--secondary);
+            border: none;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .input-area button:hover {
+            background: var(--accent);
+            transform: scale(1.02);
+        }
+
+        .info-cards {
+            flex: 1;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 6px solid var(--accent);
+        }
+
+        .section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            border-left: 5px solid var(--accent);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--gray-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-external, .btn-wifi {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-external:hover, .btn-wifi:hover {
+            background: var(--accent);
+            transform: translateX(4px);
+        }
+        
+        .wifi-highlight {
+            background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+            border-left: 6px solid #ff9800;
+        }
+        
+        .stat-bar {
+            background: #e2e8f0;
+            border-radius: 20px;
+            margin: 0.8rem 0;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            background: var(--secondary);
+            height: 0.8rem;
+            border-radius: 20px;
+            width: 0%;
+        }
+
+        /* Seção de comentários */
+        .comments-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comment-form input, .comment-form textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .comment-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-form button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            width: fit-content;
+            transition: 0.2s;
+        }
+        
+        .comment-form button:hover {
+            background: var(--accent);
+            transform: scale(1.02);
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .comment-item {
+            background: var(--gray-bg);
+            padding: 1.2rem;
+            border-radius: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .comment-name {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .comment-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-left: auto;
+        }
+        
+        .comment-text {
+            margin-top: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .empty-comments {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 1.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 2rem;
+        }
+        
+        .info-badge {
+            background: #ff980020;
+            border-radius: 30px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .resource-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 760px) {
+            .main-content { flex-direction: column; }
+            .chat-box { height: 380px; }
+            .accessibility-toolbar { justify-content: center; }
+            nav { top: 0; }
+        }
+
+        button, a, [role="button"] {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="accessibility-toolbar" id="accessToolbar">
+        <button class="accessibility-btn" id="contrastBtn" aria-label="Alternar alto contraste"><i class="fas fa-adjust"></i> Alto Contraste</button>
+        <button class="accessibility-btn" id="textSizeBtn" aria-label="Aumentar ou diminuir texto"><i class="fas fa-text-height"></i> Texto Grande</button>
+        <button class="accessibility-btn" id="speakBtn" aria-label="Ler conteúdo em voz alta"><i class="fas fa-volume-up"></i> Ler Tela</button>
+        <button class="accessibility-btn" id="resetAccessBtn" aria-label="Redefinir acessibilidade"><i class="fas fa-undo-alt"></i> Redefinir</button>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-universal-access logo-icon"></i>
+                <div><h1>Tecnologia Acessível</h1><p>Redução das Desigualdades Digitais</p></div>
+            </div>
+            <p class="tagline">Inclusão para todos: conectividade, tecnologia assistiva e educação digital transformam vidas.</p>
+            <div class="view-counter" id="viewCounter">
+                <i class="fas fa-eye"></i> <span id="viewCount">0</span> visualizações
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#home" class="active"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="#courses-platforms"><i class="fas fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#knowledge"><i class="fas fa-book-open"></i> Capacitação</a></li>
+            <li><a href="#wifi-bh"><i class="fas fa-wifi"></i> Wi-Fi BH</a></li>
+            <li><a href="#ongs-bh"><i class="fas fa-hand-holding-heart"></i> ONGs em BH</a></li>
+            <li><a href="#tools"><i class="fas fa-microchip"></i> Ferramentas</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Chat IA -->
+            <div class="chat-container">
+                <div class="chat-header"><i class="fas fa-robot"></i> Assistente de Inclusão Digital (IA)</div>
+                <div class="chat-box" id="chatBox" aria-live="polite">
+                    <div class="message ai-message">
+                        <div class="message-header"><i class="fas fa-hands-helping"></i> Assistente</div>
+                        Olá! 💙 Pergunte sobre acessibilidade digital, tecnologia assistiva, Wi-Fi gratuito em BH, ONGs que oferecem cursos ou recursos de inclusão digital.
+                    </div>
+                </div>
+                <div class="quick-actions" id="quickActions">
+                    <button class="quick-chip" data-question="Quais os pontos de Wi-Fi gratuito em BH?">📡 Wi-Fi BH gratuito</button>
+                    <button class="quick-chip" data-question="ONGs que oferecem cursos gratuitos em Belo Horizonte">❤️ ONGs e cursos em BH</button>
+                    <button class="quick-chip" data-question="O que são as diretrizes WCAG?">🌐 WCAG W3C</button>
+                    <button class="quick-chip" data-question="Quais cursos gratuitos existem?">🎓 Cursos gratuitos</button>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="userInput" placeholder="Digite sua dúvida sobre acessibilidade, WCAG, cursos ou Wi-Fi BH..." aria-label="Campo de pergunta">
+                    <button id="sendBtn" aria-label="Enviar mensagem"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <div class="info-cards">
+                <div class="card"><h3><i class="fas fa-eye"></i> Tecnologia Assistiva</h3><p>Leitores de tela, ampliadores, reconhecimento de voz e adaptações para inclusão plena.</p><ul><li>NVDA, JAWS, VoiceOver</li><li>Teclados adaptados</li><li>Software de comunicação aumentativa</li></ul></div>
+                <div class="card"><h3><i class="fas fa-network-wired"></i> Conectividade & Inclusão</h3><p>Acesso à internet de qualidade e equipamentos adequados reduzem o fosso digital.</p><ul><li>Centros comunitários digitais</li><li>Políticas de Wi-Fi público</li><li>Dispositivos de baixo custo</li></ul></div>
+                <div class="card"><h3><i class="fas fa-chalkboard-user"></i> Capacitação Digital</h3><p>Educação para todos: cursos gratuitos, oficinas para terceira idade e treinamento profissional.</p><ul><li>Alfabetização digital</li><li>Projetos de voluntariado</li><li>Certificações acessíveis</li></ul></div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO: CURSOS INSTITUTO BRADESCO E SANTANDER -->
+        <section class="section" id="courses-platforms">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Cursos Gratuitos Online - Instituto Bradesco e Santander</h2>
+            <p>Amplie seus conhecimentos em tecnologia, acessibilidade e desenvolvimento profissional com estes cursos totalmente gratuitos e com certificado, disponíveis para todo o Brasil.</p>
+            
+            <div class="resources-grid">
+                <div class="resource-card" style="border-top: 5px solid #003366;">
+                    <h4><i class="fas fa-laptop-code"></i> Instituto Bradesco - Escola Virtual</h4>
+                    <p>A plataforma <strong>Nube</strong> da Fundação Bradesco oferece dezenas de cursos online gratuitos nas áreas de tecnologia, administração, desenvolvimento pessoal e muito mais, com emissão de certificado.</p>
+                    <ul style="margin: 1rem 0 0 1.2rem;">
+                        <li>Introdução à Programação</li>
+                        <li>Office 365 e Ferramentas de Colaboração</li>
+                        <li>Lógica de Programação</li>
+                        <li>Marketing Digital e Redes Sociais</li>
+                        <li>Fundamentos de Acessibilidade Digital</li>
+                    </ul>
+                    <a href="https://www.ev.org.br/" target="_blank" class="btn-external" rel="noopener noreferrer">Acessar cursos do Instituto Bradesco →</a>
+                </div>
+                
+                <div class="resource-card" style="border-top: 5px solid #ec0000;">
+                    <h4><i class="fas fa-university"></i> Santander Open Academy</h4>
+                    <p>Iniciativa global do Banco Santander com +1.000 cursos gratuitos, conteúdo de qualidade e bolsas de estudo. Parcerias com MIT, Harvard, British Council, Microsoft e Google.</p>
+                    <ul style="margin: 1rem 0 0 1.2rem;">
+                        <li><strong>Tecnologia</strong> – IA, Ciência de Dados (IBM), Front-End, Segurança Digital</li>
+                        <li><strong>Idiomas</strong> – Inglês com British Council, Espanhol</li>
+                        <li><strong>Negócios</strong> – Marketing Digital, Excel, Power BI, SEO</li>
+                        <li><strong>Inclusão e Empregabilidade</strong> – Cursos para pessoas com deficiência e 50+</li>
+                    </ul>
+                    <a href="https://www.santanderopenacademy.com/pt_br/courses.html" target="_blank" class="btn-external" rel="noopener noreferrer">Explorar Santander Open Academy →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE CAPACITAÇÃO ORIGINAL - Microsoft Learn e WCAG/W3C -->
+        <section class="section" id="knowledge">
+            <h2 class="section-title"><i class="fas fa-book-open"></i> Centro de Conhecimento em Acessibilidade</h2>
+            <p>Documentação e tutoriais baseados nos melhores padrões globais de acessibilidade digital. Aprenda com as principais referências do setor.</p>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4><i class="fab fa-microsoft"></i> Fundamentos de Acessibilidade - Microsoft Learn</h4>
+                    <p>Aprenda os princípios básicos da acessibilidade digital, design inclusivo e como criar tecnologia para todos.</p>
+                    <a class="resource-link" href="https://learn.microsoft.com/pt-br/training/paths/accessibility-fundamentals/" target="_blank" rel="noopener noreferrer">Acessar tutorial →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-globe"></i> Acessibilidade Web (WCAG) - W3C WAI</h4>
+                    <p>Diretrizes técnicas oficiais para criar sites acessíveis. Conheça as WCAG 2.1 e as melhores práticas internacionais.</p>
+                    <a class="resource-link" href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener noreferrer">Ver documentação oficial →</a>
+                    <a class="resource-link" href="https://www.w3c.br/divulgacao/guias/acessibilidade/" target="_blank" rel="noopener noreferrer" style="margin-left: 15px;">W3C Brasil →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-robot"></i> IA aplicada à inclusão</h4>
+                    <p>Como usar Inteligência Artificial para reduzir desigualdades: legendagem automática, descrição de imagens e ferramentas assistivas.</p>
+                    <a class="resource-link" href="https://www.microsoft.com/en-us/ai/ai-for-accessibility" target="_blank" rel="noopener noreferrer">Explorar IA para Acessibilidade →</a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.8rem; background: #eef2fa; border-radius: 1rem; padding: 1.2rem;">
+                <p><strong><i class="fas fa-check-circle" style="color: var(--accent);"></i> Boas práticas recomendadas pela W3C:</strong> Utilize HTML semântico, forneça texto alternativo, garanta contraste adequado, permita navegação por teclado e ofereça legendas em conteúdos multimídia.</p>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: WI-FI GRATUITO EM BELO HORIZONTE -->
+        <section class="section" id="wifi-bh">
+            <h2 class="section-title"><i class="fas fa-wifi"></i> Wi-Fi Gratuito em Belo Horizonte</h2>
+            <p>Belo Horizonte é referência nacional em inclusão digital. A Prefeitura, por meio da <strong>Prodabel</strong>, mantém uma das maiores redes públicas de Wi-Fi gratuito do Brasil.</p>
+            
+            <div class="resources-grid" style="margin-bottom: 1.5rem;">
+                <div class="resource-card wifi-highlight">
+                    <h4><i class="fas fa-chart-line"></i> +4.800 pontos de Wi-Fi</h4>
+                    <p>Distribuídos por toda a cidade, incluindo praças, avenidas e equipamentos públicos.</p>
+                </div>
+                <div class="resource-card wifi-highlight">
+                    <h4><i class="fas fa-home"></i> 100% das vilas e favelas</h4>
+                    <p>218 vilas, favelas e conjuntos habitacionais com cobertura Wi-Fi gratuita.</p>
+                </div>
+                <div class="resource-card wifi-highlight">
+                    <h4><i class="fas fa-users"></i> +3,3 milhões de usuários</h4>
+                    <p>Cidadãos já cadastrados na rede Wi-Fi BH (Gratuito).</p>
+                </div>
+            </div>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4><i class="fas fa-map-marker-alt"></i> Como acessar a rede Wi-Fi BH</h4>
+                    <p><strong>Rede:</strong> <code style="background:#eee; padding:2px 6px; border-radius:8px;">Wi-Fi BH (Gratuito)</code></p>
+                    <ol style="margin-top: 10px; padding-left: 1.2rem;">
+                        <li>Procure pela rede <strong>Wi-Fi BH (Gratuito)</strong></li>
+                        <li>Conecte-se e aguarde a página de login</li>
+                        <li>Cadastre CPF e nome completo (primeiro acesso)</li>
+                    </ol>
+                    <a href="https://prefeitura.pbh.gov.br/noticias/prefeitura-lanca-novos-pontos-de-wi-fi-gratuito-na-regiao-do-centro" target="_blank" class="btn-wifi">📍 Ver locais oficiais →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-tree"></i> Principais pontos de Wi-Fi livre</h4>
+                    <ul style="margin: 10px 0 0 1.2rem;">
+                        <li>Praça Sete e Praça da Estação</li>
+                        <li>Praça da Liberdade e Praça do Papa</li>
+                        <li>Parque Municipal</li>
+                        <li>Avenida Afonso Pena</li>
+                    </ul>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-building"></i> Telecentros com computadores gratuitos</h4>
+                    <p>A PBH oferece <strong>130 telecentros</strong> com computadores para acesso livre à internet e cursos básicos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: ONGs EM BH -->
+        <section class="section" id="ongs-bh">
+            <h2 class="section-title"><i class="fas fa-hand-holding-heart"></i> ONGs e Organizações que Oferecem Apoio em BH</h2>
+            <p>Organizações da sociedade civil em Belo Horizonte que atuam na promoção da inclusão digital.</p>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4><i class="fas fa-laptop-code"></i> Telecentros Comunitários</h4>
+                    <p>Espaços públicos com computadores e internet gratuita, com cursos básicos de informática.</p>
+                    <a href="https://prefeitura.pbh.gov.br/noticias/pbh-anuncia-17-novos-telecentros-de-inclusao-digital-para-populacao" target="_blank" class="btn-external">Saiba mais →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-falcon"></i> Gerando Falcões - Favela Startup</h4>
+                    <p>Programa de empreendedorismo digital e tecnologia para moradores de favelas.</p>
+                    <a href="https://www.gerandofalcoes.com/favela-startup" target="_blank" class="btn-external">Site oficial →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-futbol"></i> CUFA Minas Gerais</h4>
+                    <p>Cursos de capacitação profissional, tecnologia e inclusão digital para comunidades periféricas.</p>
+                    <a href="https://www.cufa.org.br/unidades/mg" target="_blank" class="btn-external">Conhecer CUFA MG →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-code"></i> Recode</h4>
+                    <p>Formação gratuita em programação, desenvolvimento web e soft skills para jovens.</p>
+                    <a href="https://recode.org.br" target="_blank" class="btn-external">Site Recode →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE FERRAMENTAS -->
+        <section class="section" id="tools">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> Ferramentas Essenciais de Acessibilidade</h2>
+            <div class="resources-grid">
+                <div class="resource-card"><h4>📢 Leitores de Tela</h4><ul><li>NVDA (Gratuito, Windows)</li><li>VoiceOver (Apple)</li><li>TalkBack (Android)</li></ul></div>
+                <div class="resource-card"><h4>✅ Teste e Validação</h4><ul><li>WAVE Web Accessibility Tool</li><li>axe DevTools</li><li>Lighthouse CI</li></ul></div>
+                <div class="resource-card"><h4>🎙️ Reconhecimento de Voz</h4><ul><li>Dragon NaturallySpeaking</li><li>Windows Dictation</li><li>Google Voice Access</li></ul></div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE COMENTÁRIOS -->
+        <div class="comments-section" id="comments">
+            <h2 class="section-title"><i class="fas fa-comments"></i> Sugestões e Agradecimentos</h2>
+            <p>Deixe sua opinião, sugestão de melhoria ou agradecimento. Sua participação nos ajuda a crescer!</p>
+            
+            <div class="comment-form">
+                <input type="text" id="commentName" placeholder="Seu nome (opcional)" maxlength="50">
+                <textarea id="commentMessage" placeholder="Escreva sua mensagem aqui..." maxlength="500" required></textarea>
+                <button id="submitCommentBtn"><i class="fas fa-paper-plane"></i> Enviar comentário</button>
+            </div>
+            
+            <div class="comments-list" id="commentsList">
+                <div class="empty-comments">
+                    <i class="fas fa-comment-dots" style="font-size: 2rem; opacity: 0.5;"></i>
+                    <p>Seja o primeiro a comentar!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO SOBRE -->
+        <section class="section" id="about">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> Sobre o Projeto</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                <div style="flex:1"><h3>📌 Missão</h3><p>Reduzir as barreiras que impedem pessoas com deficiência, idosos e comunidades periféricas de acessarem o mundo digital.</p><h3 style="margin-top:1.2rem;">🎯 ODS</h3><p>Alinhado ao ODS 10 (Redução das Desigualdades) e ODS 9 (Inovação).</p></div>
+                <div style="flex:1; background: linear-gradient(130deg, var(--primary-light), var(--secondary-light)); border-radius: 1.5rem; padding: 1.8rem; color: white; text-align: center;"><i class="fas fa-hands-helping" style="font-size: 3rem;"></i><h3>Participe da Mudança</h3><button id="volunteerBtn" style="background: white; border: none; padding: 0.6rem 1.5rem; border-radius: 40px; margin-top: 1rem; font-weight: bold;">Quero Ajudar</button></div>
+            </div>
+            <div style="margin-top: 2rem; background: #eef2fa; padding: 1.5rem; border-radius: 1rem;"><p><strong>Contato:</strong> anaclara@4441094.uninter.com | Projeto Interdisciplinar UNINTER</p></div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div><h3>Tecnologia Acessível</h3><p>Democratização digital e ferramentas livres para acessibilidade.</p></div>
+            <div><h3>Navegação</h3><ul style="list-style: none;"><li><a href="#courses-platforms" style="color:white">Cursos</a></li><li><a href="#knowledge" style="color:white">Capacitação</a></li><li><a href="#wifi-bh" style="color:white">Wi-Fi BH</a></li></ul></div>
+            <div><h3>Referências</h3><ul style="list-style: none;"><li><a href="https://www.w3.org/WAI/" target="_blank" style="color:white">W3C WAI</a></li><li><a href="https://learn.microsoft.com/" target="_blank" style="color:white">Microsoft Learn</a></li></ul></div>
+        </div>
+        <div class="copyright" style="text-align:center; margin-top:2rem; border-top: 1px solid #334155; padding-top:1.5rem;">&copy; 2026 Tecnologia Acessível - WCAG 2.1</div>
+    </footer>
+
+    <script>
+        // ==================== CONTADOR DE VISUALIZAÇÕES ====================
+        let viewCount = localStorage.getItem('siteViews');
+        if (viewCount === null) {
+            viewCount = 1;
+        } else {
+            viewCount = parseInt(viewCount) + 1;
+        }
+        localStorage.setItem('siteViews', viewCount);
+        document.getElementById('viewCount').innerText = viewCount;
+        
+        // ==================== SISTEMA DE COMENTÁRIOS ====================
+        let comments = JSON.parse(localStorage.getItem('siteComments')) || [];
+        
+        function renderComments() {
+            const commentsList = document.getElementById('commentsList');
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<div class="empty-comments"><i class="fas fa-comment-dots" style="font-size: 2rem; opacity: 0.5;"></i><p>Seja o primeiro a comentar!</p></div>';
+                return;
+            }
+            
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment-item">
+                    <div class="comment-name">
+                        <i class="fas fa-user-circle"></i> ${escapeHtml(comment.name || 'Anônimo')}
+                        <span class="comment-date">${comment.date}</span>
+                    </div>
+                    <div class="comment-text">${escapeHtml(comment.message)}</div>
+                </div>
+            `).join('');
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function addComment(name, message) {
+            if (!message.trim()) {
+                alert('Por favor, escreva uma mensagem.');
+                return false;
+            }
+            
+            const newComment = {
+                name: name.trim() || 'Anônimo',
+                message: message.trim(),
+                date: new Date().toLocaleString('pt-BR')
+            };
+            
+            comments.unshift(newComment);
+            localStorage.setItem('siteComments', JSON.stringify(comments));
+            renderComments();
+            return true;
+        }
+        
+        document.getElementById('submitCommentBtn').addEventListener('click', () => {
+            const name = document.getElementById('commentName').value;
+            const message = document.getElementById('commentMessage').value;
+            if (addComment(name, message)) {
+                document.getElementById('commentName').value = '';
+                document.getElementById('commentMessage').value = '';
+                alert('Comentário enviado com sucesso! Obrigado por contribuir.');
+            }
+        });
+        
+        renderComments();
+        
+        // ==================== CHAT IA ====================
+        const aiDatabase = {
+            default: "Ótima pergunta! Posso ajudar com informações sobre Wi-Fi gratuito em BH, ONGs que oferecem cursos, tecnologia assistiva, WCAG ou cursos gratuitos.",
+            "wifi bh": "Belo Horizonte possui mais de 4.800 pontos de Wi-Fi gratuito! A rede se chama 'Wi-Fi BH (Gratuito)'. Para acessar, conecte-se à rede, faça um cadastro simples com CPF e nome.",
+            "ongs bh": "Em Belo Horizonte, diversas ONGs oferecem apoio e cursos gratuitos: Telecentros Comunitários, Gerando Falcões, CUFA MG e Recode.",
+            "wcag": "WCAG são as diretrizes internacionais do W3C para acessibilidade web, garantindo que sites sejam perceptíveis, operáveis, compreensíveis e robustos.",
+            "cursos gratuitos": "Temos duas ótimas plataformas gratuitas: Instituto Bradesco (ev.org.br) e Santander Open Academy (santanderopenacademy.com).",
+            "microsoft learn": "Microsoft Learn oferece trilhas gratuitas sobre acessibilidade. Acesse: learn.microsoft.com/pt-br/training/paths/accessibility-fundamentals/",
+            "ferramentas gratuitas": "Ferramentas gratuitas: NVDA (leitor tela), WAVE, axe DevTools, Lighthouse, Color Contrast Analyzer."
+        };
+        
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        function addMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            const header = document.createElement('div');
+            header.className = 'message-header';
+            header.innerHTML = isUser ? '<i class="fas fa-user"></i> Você' : '<i class="fas fa-robot"></i> Assistente IA';
+            const content = document.createElement('div');
+            content.innerText = text;
+            msgDiv.appendChild(header);
+            msgDiv.appendChild(content);
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        function showTyping(callback) {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingLoader';
+            typingDiv.className = 'message ai-message';
+            typingDiv.innerHTML = '<div class="message-header"><i class="fas fa-robot"></i> Assistente</div><div class="typing-dots" style="display:flex; gap:5px;"><span>●</span><span>●</span><span>●</span></div>';
+            chatBox.appendChild(typingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            setTimeout(() => {
+                if (document.getElementById('typingLoader')) document.getElementById('typingLoader').remove();
+                callback();
+            }, 600);
+        }
+        
+        function getAIResponse(question) {
+            const lower = question.toLowerCase();
+            if (lower.includes("wifi")) return aiDatabase["wifi bh"];
+            if (lower.includes("ong")) return aiDatabase["ongs bh"];
+            if (lower.includes("wcag")) return aiDatabase["wcag"];
+            if (lower.includes("cursos") || lower.includes("bradesco") || lower.includes("santander")) return aiDatabase["cursos gratuitos"];
+            if (lower.includes("microsoft")) return aiDatabase["microsoft learn"];
+            if (lower.includes("ferramenta")) return aiDatabase["ferramentas gratuitas"];
+            return aiDatabase.default;
+        }
+        
+        function processQuestion() {
+            const text = userInput.value.trim();
+            if (!text) return;
+            addMessage(text, true);
+            userInput.value = '';
+            showTyping(() => {
+                const answer = getAIResponse(text);
+                addMessage(answer);
+            });
+        }
+        
+        sendBtn.addEventListener('click', processQuestion);
+        userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') processQuestion(); });
+        
+        document.querySelectorAll('.quick-chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                userInput.value = btn.getAttribute('data-question') || '';
+                processQuestion();
+            });
+        });
+        
+        // ==================== ACESSIBILIDADE ====================
+        const contrastBtn = document.getElementById('contrastBtn');
+        const textSizeBtn = document.getElementById('textSizeBtn');
+        const speakBtn = document.getElementById('speakBtn');
+        const resetBtn = document.getElementById('resetAccessBtn');
+        let synth = window.speechSynthesis;
+        let currentUtterance = null;
+        
+        contrastBtn.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+            contrastBtn.innerHTML = document.body.classList.contains('high-contrast') ? '<i class="fas fa-sun"></i> Normal' : '<i class="fas fa-moon"></i> Alto Contraste';
+        });
+        
+        textSizeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('large-text');
+            textSizeBtn.innerHTML = document.body.classList.contains('large-text') ? '<i class="fas fa-text-height"></i> Texto Normal' : '<i class="fas fa-text-height"></i> Texto Grande';
+        });
+        
+        speakBtn.addEventListener('click', () => {
+            if (synth.speaking && currentUtterance) {
+                synth.cancel();
+                speakBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ler Conteúdo';
+                return;
+            }
+            let texto = document.body.innerText.substring(0, 2000);
+            currentUtterance = new SpeechSynthesisUtterance(texto);
+            currentUtterance.lang = 'pt-BR';
+            currentUtterance.rate = 0.9;
+            currentUtterance.onend = () => { speakBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ler Conteúdo'; };
+            synth.speak(currentUtterance);
+            speakBtn.innerHTML = '<i class="fas fa-stop"></i> Parar';
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            document.body.classList.remove('high-contrast', 'large-text');
+            contrastBtn.innerHTML = '<i class="fas fa-adjust"></i> Alto Contraste';
+            textSizeBtn.innerHTML = '<i class="fas fa-text-height"></i> Texto Grande';
+            if (synth.speaking) synth.cancel();
+            speakBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ler Conteúdo';
+        });
+        
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        document.getElementById('volunteerBtn')?.addEventListener('click', () => {
+            alert("Obrigado pelo interesse! Entre em contato: anaclara@4441094.uninter.com");
+        });
+        
+        setTimeout(() => {
+            addMessage("📢 Bem-vindo! Deixe sua sugestão ou agradecimento na seção de comentários. Sua opinião é muito importante!", false);
+        }, 1500);
+    </script>
+</body>
+</html>
